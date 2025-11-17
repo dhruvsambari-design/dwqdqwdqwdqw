@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For My Princess Butki</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffebee;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1, h2, p {
+            color: #b30000;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background: #ff1744;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background: #d50000;
+        }
+
+        /* Red floating hearts */
+        .heart {
+            position: fixed;
+            color: red;
+            font-size: 20px;
+            animation: floatUp 4s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.8); opacity: 0; }
+        }
+
+        /* Pages hidden by default */
+        .page { display: none; }
+
+        /* Cute fade animation */
+        .fade { animation: fadeIn 1s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Slideshow */
+        .slide-text {
+            font-size: 26px;
+            color: #b30000;
+            opacity: 0;
+            transition: opacity 0.6s;
+            height: 130px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .slide-text.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO -->
+    <audio id="bgMusic" src="music/music.mp3"></audio>
+
+    <!-- PAGE 1 -->
+    <div id="page1" class="center page fade" style="display:block;">
+        <h1>Hi Butki ❤️</h1>
+        <h2>Can I show you something special?</h2>
+        <button onclick="startExperience()">Yes</button>
+        <button onclick="alert('Please say yes Butki 😭❤️')">No</button>
+    </div>
+
+    <!-- PAGE 2: Gift Box -->
+    <div id="page2" class="center page fade">
+        <h1>A special gift for my princess 🎁</h1>
+        <p>Tap the box!</p>
+        <div style="font-size:70px; cursor:pointer;" onclick="openGift()">🎁</div>
+    </div>
+
+    <!-- PAGE 3: Slideshow Text -->
+    <div id="page3" class="center page fade">
+        <h2>For My Princess ❤️</h2>
+        <div id="slideshowText"></div>
+        <button onclick="nextSlide()">Next ➜</button>
+    </div>
+
+    <!-- PAGE 4: Paragraph Page -->
+    <div id="page4" class="center page fade">
+        <h1>Butki ❤️</h1>
+        <p style="font-size:20px; max-width:600px;">
+            You are the warmest part of my days and the softest part of my nights.
+            You make life feel lighter, sweeter, and so full of reasons to smile.
+            I love the way you talk, the way you laugh, the way you exist.
+            Everything about you feels like home.
+            I just want you to know… you will always be my princess. 👑❤️
+        </p>
+        <button onclick="goToPage5()">Next ➜</button>
+    </div>
+
+    <!-- PAGE 5: Final Page -->
+    <div id="page5" class="center page fade">
+        <h1>Happy Princess Day, Butki ❤️👑</h1>
+        <h3>You’re the most precious girl in my world.</h3>
+    </div>
+
+<script>
+    /* HEART EFFECT */
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.top = (window.innerHeight - 20) + 'px';
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 3500);
+    }
+    setInterval(createHeart, 400);
+
+    /* PAGE SWITCH */
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+    }
+
+    /* START */
+    function startExperience() {
+        let audio = document.getElementById("bgMusic");
+        audio.play().catch(() => {
+            console.log("User interaction required");
+        });
+        showPage('page2');
+    }
+
+    /* GIFT BOX */
+    function openGift() {
+        showPage('page3');
+        startSlideshow();
+    }
+
+    /* TEXT SLIDES */
+    const slides = [
+        "You are the cutest human alive ❤️",
+        "Your smile makes everything better 😭❤️",
+        "I love your voice, your laughter, your everything 😍",
+        "You make my world brighter, Butki ❤️",
+        "And you’ll always be my princess 👑❤️"
+    ];
+
+    let currentSlide = 0;
+
+    function startSlideshow() {
+        const slideBox = document.getElementById('slideshowText');
+        slideBox.innerHTML = `<div class='slide-text active'>${slides[0]}</div>`;
+    }
+
+    function nextSlide() {
+        currentSlide++;
+
+        if (currentSlide >= slides.length) {
+            showPage('page4');
+            return;
+        }
+
+        const slideBox = document.getElementById('slideshowText');
+        slideBox.innerHTML = `<div class='slide-text active'>${slides[currentSlide]}</div>`;
+    }
+
+    function goToPage5() {
+        showPage('page5');
+    }
+</script>
+
+</body>
+</html>
